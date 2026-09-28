@@ -1,0 +1,12 @@
+# Redirects. Netlify/Cloudflare Pages `_redirects` format.
+# Module 9's four Shariah-compliant-vehicles lessons were merged into one.
+# Two live guide pages still link to the old slugs, plus any external/bookmarked links.
+/learn/how-shariah-screening-works/            /learn/shariah-compliant-vehicles/   301
+/learn/reading-a-screening-verdict/            /learn/shariah-compliant-vehicles/   301
+/learn/finding-a-shariah-compliant-fund-or-etf/ /learn/shariah-compliant-vehicles/  301
+/learn/sukuk-vs-bonds/                         /learn/shariah-compliant-vehicles/   301
+
+# Module 5 Lesson 3 was removed in the same revision; its content moved into
+# what-riba-actually-is (definitions), value-investing-vs-speculation (derivatives)
+# and takaful-and-the-australian-insurance-reality (insurance).
+/learn/gharar-and-maysir/                      /learn/what-riba-actually-is/        301

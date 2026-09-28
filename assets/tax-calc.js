@@ -202,4 +202,7 @@ function calculateTax(){
   document.getElementById('txResult').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
-document.getElementById('txCalcBtn').addEventListener('click', calculateTax);
+// Guarded: other pages (e.g. the hourly-rate calculator) load this file just to reuse
+// the tax-calc functions above, and don't have a #txCalcBtn on the page.
+const txCalcBtn = document.getElementById('txCalcBtn');
+if(txCalcBtn) txCalcBtn.addEventListener('click', calculateTax);

@@ -541,3 +541,37 @@ footer.sitefooter .wrap > span{display:block; font-size:13px; line-height:1.65; 
 footer.info-foot{margin-top:32px; font-size:12.5px; color:var(--ink-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
 
 @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none !important;} }
+
+
+/* ---------------------------------------------------------- Learn: module tags
+   A module can carry a tag (currently 'For Muslim investors' on Module 1). The badge marks
+   it in the module list; the note explains what the tag means and that the module is
+   skippable. Both are generated from module.tag in content/learn.json. */
+.module-tag{display:inline-block; vertical-align:middle; font-family:'Instrument Sans',system-ui,sans-serif; font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:4px 10px; margin-left:8px; white-space:nowrap;}
+.module-tag-inline{margin-left:0; padding:2px 8px; font-size:10.5px;}
+.module-card.is-tagged{border-color:var(--accent);}
+.module-note{font-size:13.5px; line-height:1.6; color:var(--ink-muted); background:var(--accent-soft); border-radius:10px; padding:11px 14px; margin:12px 0 0; max-width:70ch;}
+.lesson-article .module-note{margin:16px 0 0;}
+
+/* ------------------------------------------------------------- Learn: quizzes
+   Self-check only. Nothing is stored and nothing feeds progress tracking, so a wrong
+   answer can never block a lesson. Correct answer is always revealed after a click. */
+.lesson-quiz{margin-top:38px; background:var(--surface-2); border-radius:16px; padding:24px 26px;}
+.lesson-quiz h2{font-size:19px; font-weight:700; color:var(--ink); margin:0;}
+.quiz-intro{font-size:13.5px; color:var(--ink-muted); margin:6px 0 0;}
+.quiz-list{list-style:none; margin:20px 0 0; padding:0; display:flex; flex-direction:column; gap:24px;}
+.quiz-prompt{display:flex; gap:11px; align-items:baseline; font-size:15.5px; line-height:1.55; font-weight:600; color:var(--ink); margin:0;}
+.quiz-n{flex:none; display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--accent); color:var(--accent-ink); font-size:12px; font-weight:700;}
+.quiz-options{list-style:none; margin:12px 0 0; padding:0 0 0 33px; display:flex; flex-direction:column; gap:8px;}
+.quiz-option{display:block; width:100%; text-align:left; font-family:inherit; font-size:14.5px; line-height:1.5; color:var(--ink); background:var(--surface); border:1px solid var(--border-strong); border-radius:10px; padding:11px 14px; cursor:pointer; transition:border-color 0.15s ease, background-color 0.15s ease;}
+.quiz-option:hover:not(:disabled){border-color:var(--accent); background:var(--accent-soft);}
+.quiz-option:disabled{cursor:default;}
+.quiz-option.is-answer{border-color:var(--pass); background:var(--pass-soft); font-weight:600;}
+.quiz-option.is-wrong{border-color:var(--fail); background:var(--fail-soft); text-decoration:line-through; text-decoration-color:var(--fail);}
+.quiz-explain{font-size:14px; line-height:1.6; color:var(--ink-muted); margin:12px 0 0 33px; padding-left:13px; border-left:2px solid var(--accent);}
+.quiz-score{margin:22px 0 0; font-size:14.5px; font-weight:600; color:var(--ink);}
+@media (max-width:560px){
+  .lesson-quiz{padding:20px 18px;}
+  .quiz-options{padding-left:0;}
+  .quiz-explain{margin-left:0;}
+}

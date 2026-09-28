@@ -2,9 +2,22 @@
 window.LEARN_MANIFEST = {
   "modules": [
     {
-      "id": "why-this-matters",
+      "id": "start-here",
       "number": 1,
-      "title": "Why This Matters",
+      "title": "Start Here",
+      "planned": false,
+      "lessons": [
+        {
+          "slug": "what-this-course-covers",
+          "title": "What this course covers",
+          "access": "free"
+        }
+      ]
+    },
+    {
+      "id": "islamic-foundation",
+      "number": 2,
+      "title": "The Islamic Foundation",
       "planned": false,
       "lessons": [
         {
@@ -16,22 +29,45 @@ window.LEARN_MANIFEST = {
           "slug": "what-makes-wealth-tayyib",
           "title": "What makes wealth tayyib",
           "access": "free"
-        },
+        }
+      ]
+    },
+    {
+      "id": "how-this-course-works",
+      "number": 3,
+      "title": "How This Course Works",
+      "planned": false,
+      "lessons": [
         {
           "slug": "the-cost-of-financial-illiteracy",
           "title": "The cost of financial illiteracy",
+          "access": "free"
+        },
+        {
+          "slug": "finance-is-simpler-than-they-want-you-to-think",
+          "title": "Finance is simpler than they want you to think",
+          "access": "free"
+        },
+        {
+          "slug": "what-retirement-actually-means",
+          "title": "What retirement actually means",
+          "access": "free"
+        },
+        {
+          "slug": "meet-zaid-and-amina",
+          "title": "Meet Zaid and Amina",
           "access": "free"
         }
       ]
     },
     {
       "id": "getting-your-base-right",
-      "number": 2,
+      "number": 4,
       "title": "Getting Your Base Right",
       "planned": false,
       "lessons": [
         {
-          "slug": "where-your-money-goes",
+          "slug": "where-your-money-actually-goes",
           "title": "Where your money actually goes",
           "access": "free"
         },
@@ -44,12 +80,45 @@ window.LEARN_MANIFEST = {
           "slug": "understanding-what-you-owe",
           "title": "Understanding what you owe",
           "access": "free"
+        },
+        {
+          "slug": "good-debt-vs-bad-debt",
+          "title": "Consumer debt vs good debt",
+          "access": "free"
         }
       ]
     },
     {
-      "id": "riba-and-the-core-prohibitions",
-      "number": 3,
+      "id": "earning-and-spending-on-purpose",
+      "number": 5,
+      "title": "Earning and Spending on Purpose",
+      "planned": false,
+      "lessons": [
+        {
+          "slug": "every-purchase-is-traded-time",
+          "title": "Every purchase is traded time",
+          "access": "free"
+        },
+        {
+          "slug": "lifestyle-inflation-and-the-always-saving-default",
+          "title": "Lifestyle inflation and the always-saving default",
+          "access": "free"
+        },
+        {
+          "slug": "pay-rises-and-disposable-income",
+          "title": "Pay rises don't count unless they show up as disposable income",
+          "access": "free"
+        },
+        {
+          "slug": "negotiating-is-normal-not-aggressive",
+          "title": "Negotiating is normal, not aggressive",
+          "access": "free"
+        }
+      ]
+    },
+    {
+      "id": "riba-and-core-prohibitions",
+      "number": 6,
       "title": "Riba and the Core Prohibitions",
       "planned": false,
       "lessons": [
@@ -59,13 +128,8 @@ window.LEARN_MANIFEST = {
           "access": "free"
         },
         {
-          "slug": "spotting-riba-in-everyday-products",
-          "title": "Spotting riba in everyday products",
-          "access": "free"
-        },
-        {
-          "slug": "gharar-and-maysir",
-          "title": "Gharar and maysir",
+          "slug": "is-it-riba-judging-everyday-products",
+          "title": "Is it riba? Judging everyday products",
           "access": "free"
         },
         {
@@ -76,19 +140,24 @@ window.LEARN_MANIFEST = {
       ]
     },
     {
-      "id": "investing-fundamentals",
-      "number": 4,
-      "title": "Investing Fundamentals",
+      "id": "investing-fundamentals-1-basics",
+      "number": 7,
+      "title": "Investing Fundamentals I: The Basics",
       "planned": false,
       "lessons": [
         {
-          "slug": "what-a-share-actually-is",
-          "title": "What a share actually is",
+          "slug": "what-happens-when-you-buy-a-share",
+          "title": "What happens when you buy a share",
           "access": "free"
         },
         {
-          "slug": "risk-return-and-time",
-          "title": "Risk, return and time",
+          "slug": "etfs-why-boring-beats-clever",
+          "title": "ETFs: why boring beats clever",
+          "access": "free"
+        },
+        {
+          "slug": "compounding-why-your-brain-cant-feel-it",
+          "title": "Compounding: why your brain can't feel it",
           "access": "free"
         },
         {
@@ -97,30 +166,89 @@ window.LEARN_MANIFEST = {
           "access": "free"
         },
         {
-          "slug": "how-shariah-screening-works",
-          "title": "How Shariah screening works",
+          "slug": "time-in-the-market-not-timing-it",
+          "title": "Time in the market, not timing it",
           "access": "free"
         },
         {
-          "slug": "reading-a-screening-verdict",
-          "title": "Reading a screening verdict",
+          "slug": "risk-return-and-time-horizon",
+          "title": "Risk, return and time horizon",
+          "access": "free"
+        }
+      ]
+    },
+    {
+      "id": "investing-fundamentals-2-putting-money-in",
+      "number": 8,
+      "title": "Investing Fundamentals II: Putting Money In",
+      "planned": false,
+      "lessons": [
+        {
+          "slug": "savings-rate-vs-return-rate",
+          "title": "Savings rate vs return rate: Zaid vs Amina",
           "access": "free"
         },
         {
-          "slug": "funds-and-etfs",
-          "title": "Funds and ETFs",
+          "slug": "the-cost-of-waiting-one-more-year",
+          "title": "The cost of waiting one more year",
           "access": "free"
         },
         {
-          "slug": "sukuk-vs-bonds",
-          "title": "Sukuk vs bonds",
+          "slug": "lump-sum-vs-drip-feeding-in",
+          "title": "Lump sum vs drip-feeding in",
+          "access": "free"
+        },
+        {
+          "slug": "value-investing-vs-speculation",
+          "title": "Value investing vs speculation",
+          "access": "free"
+        }
+      ]
+    },
+    {
+      "id": "investing-fundamentals-3-shariah-vehicles",
+      "number": 9,
+      "title": "Investing Fundamentals III: Shariah-Compliant Vehicles",
+      "planned": false,
+      "lessons": [
+        {
+          "slug": "shariah-compliant-vehicles",
+          "title": "Shariah-compliant vehicles: screening, funds and sukuk",
+          "access": "free"
+        }
+      ]
+    },
+    {
+      "id": "real-estate-vs-stock-market",
+      "number": 10,
+      "title": "Real Estate vs. the Stock Market",
+      "planned": false,
+      "lessons": [
+        {
+          "slug": "why-people-stick-with-mortgages",
+          "title": "Why people stick with mortgages but not share portfolios",
+          "access": "free"
+        },
+        {
+          "slug": "leverage-real-estates-real-edge",
+          "title": "Leverage: real estate's real edge",
+          "access": "free"
+        },
+        {
+          "slug": "islamic-home-finance-alternatives",
+          "title": "Islamic home finance alternatives",
+          "access": "free"
+        },
+        {
+          "slug": "property-tax-perks-are-a-bonus",
+          "title": "Property tax perks are a bonus, not a strategy",
           "access": "free"
         }
       ]
     },
     {
       "id": "superannuation",
-      "number": 5,
+      "number": 11,
       "title": "Superannuation",
       "planned": false,
       "lessons": [
@@ -135,7 +263,7 @@ window.LEARN_MANIFEST = {
           "access": "free"
         },
         {
-          "slug": "choosing-a-compliant-super-option",
+          "slug": "choosing-a-compliant-option",
           "title": "Choosing a compliant option",
           "access": "free"
         }
@@ -143,7 +271,7 @@ window.LEARN_MANIFEST = {
     },
     {
       "id": "zakat",
-      "number": 6,
+      "number": 12,
       "title": "Zakat",
       "planned": false,
       "lessons": [
@@ -166,13 +294,23 @@ window.LEARN_MANIFEST = {
     },
     {
       "id": "protecting-what-you-build",
-      "number": 7,
+      "number": 13,
       "title": "Protecting What You Build",
       "planned": false,
       "lessons": [
         {
-          "slug": "insurance-takaful-and-the-australian-reality",
-          "title": "Insurance, takaful and the Australian reality",
+          "slug": "markets-fall-thats-normal",
+          "title": "Markets fall. That's normal.",
+          "access": "free"
+        },
+        {
+          "slug": "inflation-the-quiet-tax-on-cash",
+          "title": "Inflation: the quiet tax on cash",
+          "access": "free"
+        },
+        {
+          "slug": "takaful-and-the-australian-insurance-reality",
+          "title": "Takaful and the Australian insurance reality",
           "access": "free"
         },
         {
@@ -183,30 +321,20 @@ window.LEARN_MANIFEST = {
       ]
     },
     {
-      "id": "applied-building-your-portfolio",
-      "number": 8,
-      "title": "Applied: Building Your Portfolio",
-      "planned": true,
+      "id": "bringing-it-together",
+      "number": 14,
+      "title": "Bringing It Together",
+      "planned": false,
       "lessons": [
         {
-          "slug": "building-a-screened-portfolio",
-          "title": "Building a screened portfolio",
-          "access": "paid"
+          "slug": "your-fire-number-for-real-this-time",
+          "title": "Your FIRE number, for real this time",
+          "access": "free"
         },
         {
-          "slug": "smsf-end-to-end",
-          "title": "SMSF end to end",
-          "access": "paid"
-        },
-        {
-          "slug": "an-estate-plan-step-by-step",
-          "title": "An estate plan, step by step",
-          "access": "paid"
-        },
-        {
-          "slug": "the-annual-review",
-          "title": "The annual review",
-          "access": "paid"
+          "slug": "recap-and-whats-next",
+          "title": "Recap and what's next",
+          "access": "free"
         }
       ]
     }
