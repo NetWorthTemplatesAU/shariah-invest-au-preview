@@ -33,17 +33,26 @@ function lito(income){
   return 0;
 }
 
-function medicareLevyThresholds(hasFamily, children){
-  if(!hasFamily) return { lower:28011, upper:35013 };
-  const lower = 47238 + children * 4338;
-  return { lower, upper: lower + (59047 - 47238) };
+function medicareLevyLowerThreshold(hasFamily, children){
+  if(!hasFamily) return 28011;
+  return 47238 + children * 4338;
 }
 
+/*
+  Shade-in: 10c per dollar over the lower threshold, never more than the full 2%. The
+  shade-in ends exactly where the two meet (income = 1.25 x lower threshold), so taking
+  the minimum is the whole rule.
+
+  This previously switched to a flat 2% at a hardcoded "upper" of lower + 11,809. That is
+  right for singles and childless families (1.25 x lower), but the family threshold rises
+  $4,338 per child and the upper bound has to rise 1.25 x that, not 1 x. With children,
+  incomes between the two bounds were charged the full 2% (e.g. 3 children, $74,000:
+  $1,480 instead of $1,374.80).
+*/
 function medicareLevy(income, hasFamily, children){
-  const { lower, upper } = medicareLevyThresholds(hasFamily, children);
+  const lower = medicareLevyLowerThreshold(hasFamily, children);
   if(income <= lower) return 0;
-  if(income <= upper) return Math.min(income * 0.02, (income - lower) * 0.10);
-  return income * 0.02;
+  return Math.min(income * 0.02, (income - lower) * 0.10);
 }
 
 /*
@@ -63,12 +72,16 @@ function mlsThresholds(hasFamily, children){
   return { base, t1: base + 36000, t2: base + 118000 };
 }
 
-function medicareLevySurcharge(income, hasFamily, children){
+// The tier is decided on "income for MLS purposes" (taxable income plus reportable super
+// contributions such as salary sacrifice), but the surcharge itself is charged on taxable
+// income. chargeIncome defaults to testIncome for callers with no sacrifice.
+function medicareLevySurcharge(testIncome, hasFamily, children, chargeIncome){
+  const charge = (chargeIncome === undefined) ? testIncome : chargeIncome;
   const { base, t1, t2 } = mlsThresholds(hasFamily, children);
-  if(income <= base) return 0;
-  if(income <= t1) return income * 0.01;
-  if(income <= t2) return income * 0.0125;
-  return income * 0.015;
+  if(testIncome <= base) return 0;
+  if(testIncome <= t1) return charge * 0.01;
+  if(testIncome <= t2) return charge * 0.0125;
+  return charge * 0.015;
 }
 
 /*
@@ -105,13 +118,21 @@ function splitPackage(total, mode){
 }
 
 function computeBreakdown(salary, hasHecs, hasCover, hasFamily, children, sacrifice){
+  // You can't sacrifice more salary than you have; an oversized figure otherwise inflated
+  // the "total super" line with money that doesn't exist.
+  sacrifice = Math.min(Math.max(0, sacrifice || 0), Math.max(0, salary));
   const taxableSalary = Math.max(0, salary - sacrifice);
+  // Salary-sacrificed super is a "reportable super contribution". It is removed from
+  // taxable income, but the ATO adds it back for HELP repayment income and for income for
+  // MLS purposes. Using taxable income alone understated HECS by 15-17c for every dollar
+  // sacrificed (e.g. $100k salary, $20k sacrificed: $1,571 shown vs $4,571 actually owed).
+  const addBackIncome = taxableSalary + sacrifice;
   const incomeTaxAmt = incomeTax(taxableSalary);
   const litoAmt = Math.min(incomeTaxAmt, lito(taxableSalary));
   const taxAfterLito = incomeTaxAmt - litoAmt;
   const medicareAmt = medicareLevy(taxableSalary, hasFamily, children);
-  const mlsAmt = hasCover ? 0 : medicareLevySurcharge(taxableSalary, hasFamily, children);
-  const hecsAmt = hasHecs ? hecsRepayment(taxableSalary) : 0;
+  const mlsAmt = hasCover ? 0 : medicareLevySurcharge(addBackIncome, hasFamily, children, taxableSalary);
+  const hecsAmt = hasHecs ? hecsRepayment(addBackIncome) : 0;
   const totalDeductions = taxAfterLito + medicareAmt + mlsAmt + hecsAmt;
   const net = taxableSalary - totalDeductions;
   return { salaryForTax: taxableSalary, sacrifice, incomeTaxAmt, litoAmt, taxAfterLito, medicareAmt, mlsAmt, hecsAmt, totalDeductions, net };
@@ -179,7 +200,7 @@ function render(breakdown, superAmt, grossSalary){
   }).join('');
 }
 
-function calculateTax(){
+function calculateTax(noScroll){
   // A salary can't be negative or Infinity ("1e999" parses to the latter), and min="0"
   // on the input is only a hint when the handler is on a plain button.
   const rawIncome = parseFloat(document.getElementById('txIncome').value);
@@ -199,10 +220,22 @@ function calculateTax(){
 
   document.getElementById('txResult').hidden = false;
   render(breakdown, superAmt, salaryForTax);
-  document.getElementById('txResult').scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(noScroll !== true) document.getElementById('txResult').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 // Guarded: other pages (e.g. the hourly-rate calculator) load this file just to reuse
 // the tax-calc functions above, and don't have a #txCalcBtn on the page.
 const txCalcBtn = document.getElementById('txCalcBtn');
-if(txCalcBtn) txCalcBtn.addEventListener('click', calculateTax);
+if(txCalcBtn){
+  txCalcBtn.addEventListener('click', () => calculateTax());
+  // Once a result is on screen, keep it in step with the inputs. Before this, editing
+  // any field after pressing Calculate left the old figures showing until the button
+  // was pressed again, so the numbers on screen could silently disagree with the form.
+  ['txIncome','txSuperMode','txHecs','txCover','txSpouse','txChildren','txSacrifice'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    const live = () => { const r = document.getElementById('txResult'); if(r && !r.hidden) calculateTax(true); };
+    el.addEventListener('input', live);
+    el.addEventListener('change', live);
+  });
+}

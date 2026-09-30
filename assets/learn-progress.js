@@ -8,7 +8,7 @@
 
   localStorage throws outright in some privacy modes, so every access is wrapped.
 
-  DRAFT ADDITION (short-course bridge): completing every lesson of the /learn-basics/ short course
+  Short-course bridge: completing every lesson of the /learn-basics/ short course
   sets a `shortCourseComplete` flag. Full-course lessons that have a short-course equivalent then
   offer an optional, dismissible skip. Nothing is ever skipped automatically.
 */
@@ -36,6 +36,14 @@
     'savings-rate-vs-return-rate':        'savings-rate-vs-return-rate',
     'the-emergency-fund':                 'the-emergency-fund',
     'your-fire-number':                   'your-fire-number-for-real-this-time'
+  };
+
+  /* Full-course lessons that have a short-course equivalent but are NOT genuinely skippable,
+     because their material is almost entirely new rather than a deeper pass over the short
+     version. They keep the banner's "Jump to what's new" link but never offer "Skip ahead".
+     Decided 2026-09-29 for time-in-the-market-not-timing-it. */
+  var NO_SKIP = {
+    'time-in-the-market-not-timing-it': true
   };
 
   // Full-course slugs that have a short-course equivalent, as a lookup.
@@ -251,6 +259,9 @@
       '.skip-banner .skip-go:hover{background:var(--surface-2,#f4f4f5);}' +
       '.skip-banner .skip-dismiss{padding:6px 8px;border:0;background:transparent;opacity:.6;line-height:1;font-size:18px;}' +
       '.skip-banner .skip-dismiss:hover{opacity:1;}' +
+      '.skip-banner .skip-jump{padding:6px 12px;border:1px solid var(--border,#e4e4e7);border-radius:8px;background:var(--surface,#fff);font-weight:600;text-decoration:none;color:inherit;}' +
+      '.skip-banner .skip-jump:hover{background:var(--surface-2,#f4f4f5);}' +
+      '#beyond-the-basics{scroll-margin-top:96px;}' +
       '@media (max-width:560px){.skip-banner{flex-direction:column;}.skip-banner-actions{align-self:stretch;justify-content:space-between;}}';
     document.head.appendChild(s);
   }
@@ -263,10 +274,16 @@
     if (!FULL_WITH_EQUIVALENT[slug]) return;  // no short-course equivalent
     if (isDone(slug)) return;                 // already done, nothing to skip
     if (bannerDismissed(slug)) return;        // reader said no on this lesson
+    var skippable = !NO_SKIP[slug];
 
     var host = document.querySelector('article.lesson-article');
     if (!host) return;
     if (host.querySelector('.skip-banner')) return;
+    // Lessons whose material goes past the short-course version mark that point with
+    // id="beyond-the-basics" (set in learn.json, rendered by generate-learn-pages.js). Where it
+    // exists, the banner names the section and offers a jump straight to it.
+    var deeper = host.querySelector('#beyond-the-basics');
+    if (!skippable && !deeper) return;        // no skip and nothing to jump to: offer nothing
 
     injectStyle();
 
@@ -276,7 +293,15 @@
 
     var text = document.createElement('p');
     text.className = 'skip-banner-text';
-    text.textContent = 'You covered the basics of this in the short course. Skip ahead, or keep reading for the full version.';
+    if (!skippable) {
+      text.textContent = 'You covered the basics of this in the short course, but most of this lesson is new. ' +
+        'The new material starts at “' + deeper.textContent + '”. Jump there, or keep reading from the top.';
+    } else if (deeper) {
+      text.textContent = 'You covered the basics of this in the short course. The new material starts at “' +
+        deeper.textContent + '”. Jump there, skip ahead, or keep reading from the top.';
+    } else {
+      text.textContent = 'You covered the basics of this in the short course. Skip ahead, or keep reading for the full version.';
+    }
 
     var actions = document.createElement('div');
     actions.className = 'skip-banner-actions';
@@ -304,7 +329,14 @@
       if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
     });
 
-    actions.appendChild(go);
+    if (deeper) {
+      var jump = document.createElement('a');
+      jump.className = 'skip-jump';
+      jump.href = '#beyond-the-basics';
+      jump.textContent = 'Jump to what’s new';
+      actions.appendChild(jump);
+    }
+    if (skippable) actions.appendChild(go);
     actions.appendChild(close);
     wrap.appendChild(text);
     wrap.appendChild(actions);
@@ -335,6 +367,7 @@
     reload: function () { completed = store.read(); paintOverview(); paintLesson(); },
     shortCourseComplete: shortCourseComplete,
     bridgeMap: BRIDGE,
+    noSkip: NO_SKIP,
     _renderSkipBanner: renderSkipBanner
   };
 })();

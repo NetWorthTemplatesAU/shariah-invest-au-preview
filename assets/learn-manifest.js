@@ -85,6 +85,11 @@ window.LEARN_MANIFEST = {
           "slug": "good-debt-vs-bad-debt",
           "title": "Consumer debt vs good debt",
           "access": "free"
+        },
+        {
+          "slug": "our-financial-steps-to-freedom",
+          "title": "Our financial steps to freedom",
+          "access": "free"
         }
       ]
     },
@@ -213,7 +218,12 @@ window.LEARN_MANIFEST = {
       "lessons": [
         {
           "slug": "shariah-compliant-vehicles",
-          "title": "Shariah-compliant vehicles: screening, funds and sukuk",
+          "title": "Shariah-compliant vehicles: screening and funds",
+          "access": "free"
+        },
+        {
+          "slug": "sukuk-and-the-missing-half-of-the-portfolio",
+          "title": "Sukuk, and the missing half of the portfolio",
           "access": "free"
         }
       ]
@@ -231,7 +241,7 @@ window.LEARN_MANIFEST = {
         },
         {
           "slug": "leverage-real-estates-real-edge",
-          "title": "Leverage: real estate's real edge",
+          "title": "Leverage, and the house vs shares decision",
           "access": "free"
         },
         {
@@ -301,11 +311,6 @@ window.LEARN_MANIFEST = {
         {
           "slug": "markets-fall-thats-normal",
           "title": "Markets fall. That's normal.",
-          "access": "free"
-        },
-        {
-          "slug": "inflation-the-quiet-tax-on-cash",
-          "title": "Inflation: the quiet tax on cash",
           "access": "free"
         },
         {

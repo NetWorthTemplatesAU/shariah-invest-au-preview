@@ -26,7 +26,6 @@ const HOURLY_ITEMS = [
   { label: '20% deposit on a median Australian home', amount: 182500 },
 ];
 
-const FREQ_WEEKS = { yearly: 1, monthly: 1, fortnightly: 1, weekly: 1 };
 // Multiplier to get from one pay period to an annual figure.
 const TO_ANNUAL = { yearly: 1, monthly: 12, fortnightly: 26, weekly: 52 };
 
@@ -51,17 +50,47 @@ function updateModeVisibility(){
     mode === 'gross' ? 'Gross pay (before tax)' : 'Net pay (take-home, after tax)';
 }
 
-function annualiseHours(hoursPerWeek){
-  return hoursPerWeek * 52;
+// Hourly rates need cents: rounding $32.33 to "$32" is a 1-2% error on the headline figure
+// and on every hours-of-work number derived from it.
+function formatAUDcents(n){
+  const v = Number(n);
+  if(!isFinite(v)) return '$0.00';
+  return (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
-function calculateHourlyRate(){
+// Hours per week, clamped to the input's own min/max (1-100). Previously 0 or blank
+// silently fell back to 38 and 500 was accepted as-is, so the result could be based on a
+// number different from the one in the box. The value used is written back to the field.
+function readHours(){
+  const el = document.getElementById('hrHours');
+  if(!el) return 38;
+  let v = parseFloat(el.value);
+  if(!isFinite(v) || v <= 0) v = 38;
+  const min = parseFloat(el.getAttribute('min'));
+  const max = parseFloat(el.getAttribute('max'));
+  if(isFinite(min) && v < min) v = min;
+  if(isFinite(max) && v > max) v = max;
+  if(document.activeElement !== el && String(v) !== el.value) el.value = String(v);
+  return v;
+}
+
+// 46 working weeks, not 52: 4 weeks annual leave + ~10 public holidays (~2 weeks) are paid but
+// not worked, so counting them as worked hours understates the real hourly rate. Decided
+// 2026-10-01 during the pre-launch audit (was 52 weeks, gave $32.33/hr on a $63,880 net salary
+// at 38 hrs/wk instead of the more honest ~$36.50/hr) — matches the site's standing "give the
+// real number, not the flattering one" approach used throughout the course content.
+function annualiseHours(hoursPerWeek){
+  return hoursPerWeek * 46;
+}
+
+function calculateHourlyRate(noScroll){
   const mode = document.getElementById('hrMode').value; // 'gross' | 'net'
   const freq = document.getElementById('hrFreq').value;  // 'yearly' | 'monthly' | 'fortnightly' | 'weekly'
   const rawPay = readPositive('hrIncome', 0);
-  const hoursPerWeek = readPositive('hrHours', 38);
+  const hoursPerWeek = readHours();
+  const freqKey = Object.prototype.hasOwnProperty.call(TO_ANNUAL, freq) ? freq : 'yearly';
 
-  const annualInput = rawPay * TO_ANNUAL[freq];
+  const annualInput = rawPay * TO_ANNUAL[freqKey];
 
   let annualNet, taxAmt = 0, medicareAmt = 0;
   if(mode === 'gross'){
@@ -80,13 +109,13 @@ function calculateHourlyRate(){
   const annualHours = annualiseHours(hoursPerWeek);
   const hourlyRate = annualHours > 0 ? annualNet / annualHours : 0;
 
-  renderResult({ mode, annualInput, annualNet, taxAmt, medicareAmt, hoursPerWeek, annualHours, hourlyRate });
+  renderResult({ mode, annualInput, annualNet, taxAmt, medicareAmt, hoursPerWeek, annualHours, hourlyRate }, noScroll);
 }
 
-function renderResult(r){
+function renderResult(r, noScroll){
   document.getElementById('hrResult').hidden = false;
 
-  document.getElementById('hrHeadlineRate').textContent = formatAUD(r.hourlyRate) + '/hour';
+  document.getElementById('hrHeadlineRate').textContent = formatAUDcents(r.hourlyRate) + '/hour';
   document.getElementById('hrHeadlineSub').textContent =
     `Based on ${formatAUD(r.annualNet)} take-home a year, over ${r.hoursPerWeek} hours a week (${r.annualHours.toLocaleString('en-AU')} hours a year).`;
 
@@ -97,7 +126,7 @@ function renderResult(r){
   }
   rows.push(['Take-home pay (annual)', formatAUD(r.annualNet)]);
   rows.push(['Hours worked per year', r.annualHours.toLocaleString('en-AU') + ' hours']);
-  rows.push(['Real hourly rate', formatAUD(r.hourlyRate) + '/hour']);
+  rows.push(['Real hourly rate', formatAUDcents(r.hourlyRate) + '/hour']);
   document.querySelector('#hrBreakdownTable tbody').innerHTML = rows.map(([k,v]) =>
     `<tr><td>${k}</td><td class="mono-cell">${v}</td></tr>`
   ).join('');
@@ -117,9 +146,18 @@ function renderResult(r){
       `<td class="mono-cell">${yearsStr}</td></tr>`;
   }).join('');
 
-  document.getElementById('hrResult').scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(noScroll !== true) document.getElementById('hrResult').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 document.getElementById('hrMode').addEventListener('change', updateModeVisibility);
-document.getElementById('hrCalcBtn').addEventListener('click', calculateHourlyRate);
+document.getElementById('hrCalcBtn').addEventListener('click', () => calculateHourlyRate());
+// Once a result is showing, keep it in step with the inputs (it used to stay stale until
+// the button was pressed again, including after switching gross/net mode).
+['hrMode','hrFreq','hrIncome','hrHours'].forEach(id => {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const live = () => { const r = document.getElementById('hrResult'); if(r && !r.hidden) calculateHourlyRate(true); };
+  el.addEventListener('input', live);
+  el.addEventListener('change', live);
+});
 updateModeVisibility();

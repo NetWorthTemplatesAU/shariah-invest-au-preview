@@ -25,13 +25,24 @@ function currentNisabAUD(){
   return NISAB_GRAMS[nisabState.standard] * nisabState.pricePerGramAUD;
 }
 
+// Each fetch gets a sequence number; only the newest one may write its result. Without
+// this, switching silver -> gold -> silver quickly left two requests in flight, and if the
+// older gold response landed last its per-gram price was multiplied by the silver weight
+// (612.36g x gold price), giving a nisab ~70x too high and a false "below nisab" verdict.
+let nisabRequestSeq = 0;
+
 async function loadNisab(){
   const standard = selectedStandard();
+  const seq = ++nisabRequestSeq;
   nisabState.standard = standard;
   nisabState.status = 'loading';
   nisabState.manual = false;
+  // Clear the previous metal's price so nothing can pair it with the new standard's weight
+  // while this request is in flight.
+  nisabState.pricePerGramAUD = null;
   renderNisabLive();
 
+  let price = null, asOf = '', status = 'failed';
   try {
     const [metalRes, fxRes] = await Promise.all([
       fetch(`https://api.gold-api.com/price/${METAL_SYMBOL[standard]}`),
@@ -45,21 +56,26 @@ async function loadNisab(){
     if(!isFinite(usdPerOz) || usdPerOz <= 0 || !isFinite(audPerUsd) || audPerUsd <= 0){
       throw new Error('unexpected price data');
     }
-    nisabState.pricePerGramAUD = (usdPerOz / GRAMS_PER_TROY_OZ) * audPerUsd;
-    nisabState.asOf = metal.updatedAt ? new Date(metal.updatedAt).toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'}) : '';
-    nisabState.status = 'ok';
+    price = (usdPerOz / GRAMS_PER_TROY_OZ) * audPerUsd;
+    asOf = metal.updatedAt ? new Date(metal.updatedAt).toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'}) : '';
+    status = 'ok';
   } catch (err) {
-    // Network blocked, offline, or the service changed shape — fall back to manual entry
+    // Network blocked, offline, or the service changed shape: fall back to manual entry
     // rather than leaving the calculator unusable.
-    nisabState.pricePerGramAUD = null;
-    nisabState.status = 'failed';
+    price = null;
+    status = 'failed';
   }
+  // A newer request (the standard was switched again) owns the state now.
+  if(seq !== nisabRequestSeq) return;
+  nisabState.pricePerGramAUD = price;
+  nisabState.asOf = asOf;
+  nisabState.status = status;
   renderNisabLive();
 
   // If someone pressed Calculate while the price was still in flight, refresh that result
   // now rather than leaving a "still fetching" message they'd have to clear themselves.
   const resultEl = document.getElementById('calcResult');
-  if(resultEl && !resultEl.hidden) calculate();
+  if(resultEl && !resultEl.hidden) calculate(true);
 }
 
 function renderNisabLive(){
@@ -97,6 +113,9 @@ function renderNisabLive(){
             ? `Nisab (${grams}g ${metal.toLowerCase()}): <strong>${formatAUD(n)}</strong>`
             : `Nisab (${grams}g ${metal.toLowerCase()}): —`;
         }
+        // Keep an on-screen result in step with the manually entered price.
+        const resultEl = document.getElementById('calcResult');
+        if(resultEl && !resultEl.hidden) calculate(true);
       });
     }
     return;
@@ -153,9 +172,9 @@ function renderShareRows(){
     } else if(stock && zakatable !== null){
       matchNote = `<div class="calc-match ok">Matched ${stock.n} — cash ${stock.cash.toFixed(1)}% + receivables ${stock.recv.toFixed(1)}% = <strong>${zakatable.toFixed(1)}% zakatable under the precise method</strong>.</div>`;
     } else if(stock){
-      matchNote = `<div class="calc-match warn">Matched ${stock.n}, but no receivables figure on file for this stock (it already fails another ratio) — use full market value instead.</div>`;
+      matchNote = `<div class="calc-match warn">Matched ${stock.n}, but no receivables figure on file for this stock (it already fails another ratio), use full market value instead.</div>`;
     } else {
-      matchNote = `<div class="calc-match warn">Not found in our screened list — full market value will be used unless you know the figure yourself.</div>`;
+      matchNote = `<div class="calc-match warn">Not found in our screened list, full market value will be used unless you know the figure yourself.</div>`;
     }
     return `<div class="calc-row" data-id="${r.id}">
       <div class="calc-row-grid">
@@ -177,7 +196,17 @@ function renderShareRows(){
       inputEl.addEventListener('input', e => {
         const row = shareRows.find(r => r.id === id);
         row[e.target.dataset.field] = e.target.value;
-        if(e.target.dataset.field === 'ticker') renderShareRows();
+        if(e.target.dataset.field === 'ticker'){
+          // Re-rendering replaces the input element, which used to drop focus after the
+          // first keystroke (typing "BHP" left just "B" in the box). Put the cursor back.
+          const caret = e.target.selectionStart;
+          renderShareRows();
+          const again = wrap.querySelector(`.calc-row[data-id="${id}"] .ticker-input`);
+          if(again){
+            again.focus();
+            try { again.setSelectionRange(caret, caret); } catch (_) {}
+          }
+        }
       });
     });
   });
@@ -186,7 +215,7 @@ function renderShareRows(){
   });
 }
 
-function calculate(){
+function calculate(noScroll){
   const cash = amount('inCash');
   const goldSilver = amount('inGoldSilver');
   const otherAssets = amount('inOther');
@@ -214,7 +243,7 @@ function calculate(){
   resultEl.hidden = false;
 
   document.getElementById('resTotal').textContent = formatAUD(totalZakatable);
-  document.getElementById('resNisab').textContent = nisab !== null ? formatAUD(nisab) : '— price unavailable';
+  document.getElementById('resNisab').textContent = nisab !== null ? formatAUD(nisab) : 'price unavailable';
   document.getElementById('resShares').textContent = formatAUD(sharesTotal);
 
   const verdictEl = document.getElementById('resVerdict');
@@ -223,21 +252,29 @@ function calculate(){
     // Distinguish "still fetching" from "fetch failed" — during loading there is no manual
     // input on screen yet, so telling someone to type a price would be misleading.
     verdictEl.textContent = nisabState.status === 'loading'
-      ? 'Still fetching today’s metal price — one moment, then press Calculate again.'
+      ? 'Still fetching today’s metal price, one moment, then press Calculate again.'
       : 'Enter today’s metal price above to check the nisab threshold.';
     verdictEl.className = 'calc-verdict warn';
     dueEl.textContent = '—';
   } else if(aboveNisab){
-    verdictEl.textContent = 'Above nisab — zakat is due.';
+    verdictEl.textContent = 'Above nisab, zakat is due.';
     verdictEl.className = 'calc-verdict pass';
     dueEl.textContent = formatAUD(zakatDue);
   } else {
-    verdictEl.textContent = 'Below nisab — zakat is not due this year on this wealth.';
+    verdictEl.textContent = 'Below nisab, zakat is not due this year on this wealth.';
     verdictEl.className = 'calc-verdict neutral';
     dueEl.textContent = formatAUD(0);
   }
 
-  resultEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(noScroll !== true) resultEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// Once a result is showing, re-run it whenever an input changes, so the figures on screen
+// never disagree with the form. Share rows are re-rendered on ticker edits, so listen on
+// the container rather than the individual inputs.
+function liveRecalc(){
+  const r = document.getElementById('calcResult');
+  if(r && !r.hidden) calculate(true);
 }
 
 function formatAUD(n){
@@ -258,7 +295,18 @@ function amount(id){
 }
 
 document.getElementById('addShareBtn').addEventListener('click', addShareRow);
-document.getElementById('calcBtn').addEventListener('click', calculate);
+document.getElementById('calcBtn').addEventListener('click', () => calculate());
+['inCash','inGoldSilver','inOther','inLiabilities'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('input', liveRecalc);
+});
+const shareRowsEl = document.getElementById('shareRows');
+if(shareRowsEl){
+  shareRowsEl.addEventListener('input', liveRecalc);
+  shareRowsEl.addEventListener('change', liveRecalc);
+  // Removing a row changes the total too.
+  shareRowsEl.addEventListener('click', e => { if(e.target.closest('[data-remove]')) liveRecalc(); });
+}
 
 const nisabStandardEl = document.getElementById('inNisabStandard');
 if(nisabStandardEl){

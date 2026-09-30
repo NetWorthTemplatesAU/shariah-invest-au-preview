@@ -30,6 +30,8 @@ function readNum(id, fallback){
 }
 
 function formatAxis(v){
+  // Millions get an "m" label; "$50000k" on a $50M projection was unreadable.
+  if(v >= 1e6) return '$' + (v/1e6).toFixed(v % 1e6 === 0 ? 0 : 1) + 'm';
   if(v >= 1000) return '$' + (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k';
   return '$' + v.toFixed(0);
 }
@@ -74,12 +76,12 @@ function drawChart(points){
   const yTicks = [0, 0.25, 0.5, 0.75, 1].map(f => f * yMax);
   const yGrid = yTicks.map(v => `
     <line x1="${padL}" y1="${yFor(v).toFixed(1)}" x2="${w-padR}" y2="${yFor(v).toFixed(1)}" stroke="var(--border)" stroke-width="1"/>
-    <text x="${padL-10}" y="${(yFor(v)+4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--ink-muted)" font-family="'Instrument Sans', sans-serif" font-variant-numeric="tabular-nums">${formatAxis(v)}</text>
+    <text x="${padL-10}" y="${(yFor(v)+4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--ink-muted)" font-family="'Inter', sans-serif" font-variant-numeric="tabular-nums">${formatAxis(v)}</text>
   `).join('');
 
   const xLabelEvery = yearlyPoints.length > 12 ? Math.ceil(yearlyPoints.length/8) : 1;
   const xTicks = yearlyPoints.filter((p,i)=> i % xLabelEvery === 0 || i === yearlyPoints.length-1).map(p => `
-    <text x="${xFor(p.year).toFixed(1)}" y="${h-padB+20}" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="'Instrument Sans', sans-serif" font-variant-numeric="tabular-nums">Yr ${p.year}</text>
+    <text x="${xFor(p.year).toFixed(1)}" y="${h-padB+20}" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="'Inter', sans-serif" font-variant-numeric="tabular-nums">Yr ${p.year}</text>
   `).join('');
 
   svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
@@ -96,9 +98,9 @@ function drawChart(points){
       <circle id="hoverDotContrib" r="4" fill="var(--ink-muted)" stroke="var(--surface)" stroke-width="2"/>
       <g id="hoverTip">
         <rect id="tipRect" rx="8" ry="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1"/>
-        <text id="tipYear" font-size="10.5" font-weight="700" fill="var(--ink-muted)" font-family="'Instrument Sans',sans-serif" letter-spacing="0.02em"></text>
-        <text id="tipBalance" font-size="14" font-weight="700" fill="var(--ink)" font-family="'Instrument Sans', sans-serif" font-variant-numeric="tabular-nums"></text>
-        <text id="tipContrib" font-size="10.5" fill="var(--ink-muted)" font-family="'Instrument Sans', sans-serif" font-variant-numeric="tabular-nums"></text>
+        <text id="tipYear" font-size="10.5" font-weight="700" fill="var(--ink-muted)" font-family="'Inter',sans-serif" letter-spacing="0.02em"></text>
+        <text id="tipBalance" font-size="14" font-weight="700" fill="var(--ink)" font-family="'Inter', sans-serif" font-variant-numeric="tabular-nums"></text>
+        <text id="tipContrib" font-size="10.5" fill="var(--ink-muted)" font-family="'Inter', sans-serif" font-variant-numeric="tabular-nums"></text>
       </g>
     </g>
     <rect x="${padL}" y="${padT}" width="${plotW}" height="${plotH}" fill="transparent" style="cursor:crosshair;"/>
@@ -187,12 +189,16 @@ function resetHover(){
   setReadout(last.year, last.balance, last.contributed);
 }
 
-function calculateGrowth(){
+function calculateGrowth(noScroll){
   const start = readNum('gStart', 0);
   const monthly = readNum('gMonthly', 0);
   const rate = readNum('gRate', 0);
   // Clamped to the input's own min="1" max="50", so this can no longer be 0 or absurd.
   const years = Math.round(readNum('gYears', 15));
+  // Show the whole number of years actually projected (2.5 typed was run as 3 but left
+  // "2.5" in the box). Skipped mid-typing so live updates don't fight the keyboard.
+  const yearsEl = document.getElementById('gYears');
+  if(yearsEl && document.activeElement !== yearsEl && String(years) !== yearsEl.value) yearsEl.value = String(years);
 
   const points = computeSeries(start, monthly, rate, years);
   const final = points[points.length-1];
@@ -203,10 +209,22 @@ function calculateGrowth(){
   document.getElementById('resGrowth').textContent = formatAUD2(final.balance - final.contributed);
 
   drawChart(points);
-  document.getElementById('gResult').scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(noScroll !== true) document.getElementById('gResult').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
-document.getElementById('gCalcBtn').addEventListener('click', calculateGrowth);
+document.getElementById('gCalcBtn').addEventListener('click', () => calculateGrowth());
+// Once a projection is showing, keep it in step with the inputs (previously it stayed
+// stale until the button was pressed again). Recalculate on "change" (commit/blur), not
+// every keystroke: readNum writes clamped values back into the field, which would fight
+// someone halfway through typing a number.
+['gStart','gMonthly','gRate','gYears'].forEach(id => {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('change', () => {
+    const r = document.getElementById('gResult');
+    if(r && !r.hidden) calculateGrowth(true);
+  });
+});
 
 const growthSvgEl = document.getElementById('growthChart');
 growthSvgEl.addEventListener('mousemove', e => handleHover(e.clientX));

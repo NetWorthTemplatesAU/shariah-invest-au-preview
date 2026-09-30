@@ -4,7 +4,7 @@ window.BASICS_MANIFEST = {
     {
       "id": "basics",
       "number": 1,
-      "title": "Money Basics",
+      "title": "The Essentials",
       "planned": false,
       "lessons": [
         {

@@ -4,9 +4,21 @@
 /learn/how-shariah-screening-works/            /learn/shariah-compliant-vehicles/   301
 /learn/reading-a-screening-verdict/            /learn/shariah-compliant-vehicles/   301
 /learn/finding-a-shariah-compliant-fund-or-etf/ /learn/shariah-compliant-vehicles/  301
-/learn/sukuk-vs-bonds/                         /learn/shariah-compliant-vehicles/   301
+/learn/sukuk-vs-bonds/                         /learn/sukuk-and-the-missing-half-of-the-portfolio/   301
 
 # Module 5 Lesson 3 was removed in the same revision; its content moved into
 # what-riba-actually-is (definitions), value-investing-vs-speculation (derivatives)
 # and takaful-and-the-australian-insurance-reality (insurance).
 /learn/gharar-and-maysir/                      /learn/what-riba-actually-is/        301
+
+# inflation-the-quiet-tax-on-cash was removed 2026-09-30 (core point duplicated
+# elsewhere). Two pieces were initially relocated (a cash-vs-shares risk table into
+# risk-return-and-time-horizon, a "give cash a job" checklist into the-emergency-fund),
+# then both were deliberately removed again on his instruction later the same day.
+# Nothing from this lesson survives anywhere in the live course.
+/learn/inflation-the-quiet-tax-on-cash/        /learn/risk-return-and-time-horizon/ 301
+
+# This folder is a git working copy (the repo root doubles as the publish directory,
+# see .gitignore). Block /.git/* from being served in case the host doesn't already
+# exclude dotfolders by default, so history/config can't be crawled.
+/.git/*   /404.html   404!
