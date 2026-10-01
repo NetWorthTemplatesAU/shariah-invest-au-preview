@@ -322,6 +322,51 @@ h1.title{font-size:clamp(38px,6vw,64px); font-weight:700; letter-spacing:-0.03em
   .lesson-nav-link.is-empty{display:none;}
 }
 
+/* -------------------------------------------- course reader sidebar
+   Native <details>/<summary>, not custom JS: it degrades to a plain list with no script,
+   and a reader can collapse it at any width with a tap. Desktop gets a sticky two-column
+   grid; below 960px it stacks as a collapsible block above the article so it can never
+   push the reading column into a cramped middle strip on tablet/phone widths. */
+.lesson-layout{display:block;}
+@media (min-width:960px){
+  .lesson-layout{display:grid; grid-template-columns:252px 1fr; gap:40px; align-items:start;}
+}
+.lesson-sidebar{border:1px solid var(--border); border-radius:14px; background:var(--surface); margin-bottom:28px; overflow:hidden;}
+@media (min-width:960px){
+  .lesson-sidebar{position:sticky; top:78px; margin-bottom:0; max-height:calc(100vh - 100px); overflow-y:auto;}
+}
+.lesson-sidebar > summary{cursor:pointer; list-style:none; padding:14px 16px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-muted); display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border);}
+.lesson-sidebar > summary::-webkit-details-marker{display:none;}
+.lesson-sidebar > summary::after{content:'−'; font-size:15px; color:var(--ink-muted);}
+.lesson-sidebar:not([open]) > summary::after{content:'+';}
+.lesson-sidebar:not([open]){margin-bottom:20px;}
+.lesson-sidebar-body{padding:6px;}
+.sidebar-module{margin-bottom:2px;}
+.sidebar-module-head{display:block; padding:10px 10px 6px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-muted); cursor:default; list-style:none;}
+.sidebar-module-head::-webkit-details-marker{display:none;}
+details.sidebar-module > summary.sidebar-module-head{cursor:pointer; padding:9px 10px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+details.sidebar-module > summary.sidebar-module-head:hover{background:var(--surface-2);}
+details.sidebar-module > summary.sidebar-module-head::after{content:'+'; font-size:13px; color:var(--ink-muted); flex:none;}
+details.sidebar-module[open] > summary.sidebar-module-head::after{content:'−';}
+.sidebar-module-note{font-weight:400; text-transform:none; letter-spacing:0;}
+.sidebar-module.is-current .sidebar-module-head{color:var(--accent);}
+/* Compact override of the full-size .lesson-row used on the course overview — same class,
+   same data-lesson attribute, so assets/learn-progress.js's existing paintOverview() lights
+   up sidebar checkmarks from the same completion store with zero JS changes. */
+.lesson-sidebar .lesson-row{display:flex; align-items:center; gap:8px; padding:7px 10px; border-top:0; font-size:13px; color:var(--ink-muted); border-radius:8px;}
+.lesson-sidebar .lesson-row:hover{background:var(--surface-2);}
+.lesson-sidebar .lesson-row .lesson-check{width:14px; height:14px; flex:none;}
+.lesson-sidebar .lesson-row-title{font-size:13px; font-weight:500; color:inherit;}
+.lesson-sidebar .lesson-row.is-done{color:var(--ink-muted);}
+.lesson-sidebar .lesson-row.is-done .lesson-row-title{color:var(--ink-muted);}
+.lesson-sidebar .lesson-row.is-current{background:var(--accent-soft);}
+.lesson-sidebar .lesson-row.is-current .lesson-row-title{color:var(--ink); font-weight:700;}
+.lesson-sidebar .lesson-row.is-locked{cursor:default;}
+.lesson-main{min-width:0;}
+@media (max-width:640px){
+  .lesson-sidebar-body{padding:4px;}
+}
+
 /* Explains the per-row ratio bars, which are otherwise unlabelled. */
 .bar-legend{font-size:13px; line-height:1.6; color:var(--ink-muted); margin:0 0 14px; max-width:76ch;}
 .bar-legend strong{color:var(--ink); font-weight:600;}
