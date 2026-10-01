@@ -10,7 +10,8 @@ window.LEARN_MANIFEST = {
         {
           "slug": "what-this-course-covers",
           "title": "What this course covers",
-          "access": "free"
+          "access": "free",
+          "summary": "The whole course in one page: what each module does, who it is for, and where to start."
         }
       ]
     },
@@ -23,12 +24,14 @@ window.LEARN_MANIFEST = {
         {
           "slug": "money-as-an-amanah",
           "title": "Money as an amanah",
-          "access": "free"
+          "access": "free",
+          "summary": "Wealth as a trust rather than an end, and why halal is a description of process, not just outcome."
         },
         {
           "slug": "what-makes-wealth-tayyib",
           "title": "What makes wealth tayyib",
-          "access": "free"
+          "access": "free",
+          "summary": "Halal income, questionable income, and the gap between avoiding what is forbidden and pursuing what is good."
         }
       ]
     },
@@ -41,22 +44,26 @@ window.LEARN_MANIFEST = {
         {
           "slug": "the-cost-of-financial-illiteracy",
           "title": "The cost of financial illiteracy",
-          "access": "free"
+          "access": "free",
+          "summary": "Not knowing has a price, and it is paid in money, in time, and in compliance you did not realise you had broken."
         },
         {
           "slug": "finance-is-simpler-than-they-want-you-to-think",
           "title": "Finance is simpler than they want you to think",
-          "access": "free"
+          "access": "free",
+          "summary": "The concepts are easier than most technical subjects. The vocabulary is the barrier, and this course removes it."
         },
         {
           "slug": "what-retirement-actually-means",
           "title": "What retirement actually means",
-          "access": "free"
+          "access": "free",
+          "summary": "Retirement age is an administrative rule, not a law of nature. What that changes about how you plan."
         },
         {
           "slug": "meet-zaid-and-amina",
           "title": "Meet Zaid and Amina",
-          "access": "free"
+          "access": "free",
+          "summary": "Two fictional people on identical incomes, followed through the whole course, so the arguments have someone to happen to."
         }
       ]
     },
@@ -69,27 +76,32 @@ window.LEARN_MANIFEST = {
         {
           "slug": "where-your-money-actually-goes",
           "title": "Where your money actually goes",
-          "access": "free"
+          "access": "free",
+          "summary": "Tracking and budgeting without turning a spreadsheet into a hobby."
         },
         {
           "slug": "the-emergency-fund",
           "title": "The emergency fund",
-          "access": "free"
+          "access": "free",
+          "summary": "How much to hold, why it is based on your real life rather than a survival budget, and where it should sit."
         },
         {
           "slug": "understanding-what-you-owe",
           "title": "Understanding what you owe",
-          "access": "free"
+          "access": "free",
+          "summary": "How credit cards, car loans, personal loans, and buy now pay later actually calculate what you pay."
         },
         {
           "slug": "good-debt-vs-bad-debt",
           "title": "Consumer debt vs good debt",
-          "access": "free"
+          "access": "free",
+          "summary": "Two categories with hard edges: consumer debt is everything you clear before investing, and good debt is a very short list."
         },
         {
           "slug": "our-financial-steps-to-freedom",
           "title": "Our financial steps to freedom",
-          "access": "free"
+          "access": "free",
+          "summary": "An Australian order of operations for the emergency fund, debt, super and investing all competing for the same dollar."
         }
       ]
     },
@@ -102,22 +114,26 @@ window.LEARN_MANIFEST = {
         {
           "slug": "every-purchase-is-traded-time",
           "title": "Every purchase is traded time",
-          "access": "free"
+          "access": "free",
+          "summary": "Converting a price into hours of your life, and what Zaid's SUV really cost him."
         },
         {
           "slug": "lifestyle-inflation-and-the-always-saving-default",
           "title": "Lifestyle inflation and the always-saving default",
-          "access": "free"
+          "access": "free",
+          "summary": "Why spending rises to meet income, and how to flip the default so saving needs no reason."
         },
         {
           "slug": "pay-rises-and-disposable-income",
           "title": "Pay rises don't count unless they show up as disposable income",
-          "access": "free"
+          "access": "free",
+          "summary": "Why doubling your income can triple what you can invest, and why it often does neither."
         },
         {
           "slug": "negotiating-is-normal-not-aggressive",
           "title": "Negotiating is normal, not aggressive",
-          "access": "free"
+          "access": "free",
+          "summary": "Why asking is standard business practice, what it is actually worth, and why negotiators are usually respected more."
         }
       ]
     },
@@ -130,17 +146,20 @@ window.LEARN_MANIFEST = {
         {
           "slug": "what-riba-actually-is",
           "title": "What riba actually is",
-          "access": "free"
+          "access": "free",
+          "summary": "The prohibition, the reasoning behind it, and riba al-fadl vs riba an-nasi'ah in plain language."
         },
         {
           "slug": "is-it-riba-judging-everyday-products",
           "title": "Is it riba? Judging everyday products",
-          "access": "free"
+          "access": "free",
+          "summary": "Applying the definition to credit cards, car loans, personal loans, savings accounts and buy now pay later. What is clearly out, and what is genuinely debated."
         },
         {
           "slug": "why-the-business-itself-matters",
           "title": "Why the business itself matters",
-          "access": "free"
+          "access": "free",
+          "summary": "Business-activity screening: alcohol, gambling, conventional finance, adult entertainment, weapons, and the grey edges."
         }
       ]
     },
@@ -153,32 +172,38 @@ window.LEARN_MANIFEST = {
         {
           "slug": "what-happens-when-you-buy-a-share",
           "title": "What happens when you buy a share",
-          "access": "free"
+          "access": "free",
+          "summary": "Ownership of a real business, not a betting slip. The lawnmowing company example."
         },
         {
           "slug": "etfs-why-boring-beats-clever",
           "title": "ETFs: why boring beats clever",
-          "access": "free"
+          "access": "free",
+          "summary": "What ETFs are, why simple beats complex, the stock-picking problem, and the unanswerable question of when to sell a winner."
         },
         {
           "slug": "compounding-why-your-brain-cant-feel-it",
           "title": "Compounding: why your brain can't feel it",
-          "access": "free"
+          "access": "free",
+          "summary": "Linear thinking vs exponential growth. Links to the site compounding calculator."
         },
         {
           "slug": "diversification-without-gambling",
           "title": "Diversification without gambling",
-          "access": "free"
+          "access": "free",
+          "summary": "Spreading risk as prudence, and where diversification tips into speculation."
         },
         {
           "slug": "time-in-the-market-not-timing-it",
           "title": "Time in the market, not timing it",
-          "access": "free"
+          "access": "free",
+          "summary": "Missing the best days data, and why timing them is statistically close to impossible."
         },
         {
           "slug": "risk-return-and-time-horizon",
           "title": "Risk, return and time horizon",
-          "access": "free"
+          "access": "free",
+          "summary": "Volatility vs permanent loss, and why a longer time horizon changes what is achievable and what is sensible."
         }
       ]
     },
@@ -191,22 +216,26 @@ window.LEARN_MANIFEST = {
         {
           "slug": "savings-rate-vs-return-rate",
           "title": "Savings rate vs return rate: Zaid vs Amina",
-          "access": "free"
+          "access": "free",
+          "summary": "Early on, savings rate matters more than chasing the perfect return. The five-year Zaid vs Amina comparison, with Zaid handed a return nobody actually gets."
         },
         {
           "slug": "the-cost-of-waiting-one-more-year",
           "title": "The cost of waiting one more year",
-          "access": "free"
+          "access": "free",
+          "summary": "Why delaying by a year forfeits the shortened final year of compounding, not just one year of contributions."
         },
         {
           "slug": "lump-sum-vs-drip-feeding-in",
           "title": "Lump sum vs drip-feeding in",
-          "access": "free"
+          "access": "free",
+          "summary": "Lump sum statistically wins on average. Dollar-cost averaging is often the better behavioral choice for beginners."
         },
         {
           "slug": "value-investing-vs-speculation",
           "title": "Value investing vs speculation",
-          "access": "free"
+          "access": "free",
+          "summary": "Value is the cash a business will actually generate. Contrast with speculative assets that have no underlying cash flow."
         }
       ]
     },
@@ -219,12 +248,14 @@ window.LEARN_MANIFEST = {
         {
           "slug": "shariah-compliant-vehicles",
           "title": "Shariah-compliant vehicles: screening and funds",
-          "access": "free"
+          "access": "free",
+          "summary": "The screening standard and its four tests, four real ASX verdicts, and how to judge a fund behind its label."
         },
         {
           "slug": "sukuk-and-the-missing-half-of-the-portfolio",
           "title": "Sukuk, and the missing half of the portfolio",
-          "access": "free"
+          "access": "free",
+          "summary": "Why bonds are not an option, what sukuk are supposed to be, the asset-backed vs asset-based criticism, and the narrow Australian access problem."
         }
       ]
     },
@@ -237,22 +268,26 @@ window.LEARN_MANIFEST = {
         {
           "slug": "why-people-stick-with-mortgages",
           "title": "Why people stick with mortgages but not share portfolios",
-          "access": "free"
+          "access": "free",
+          "summary": "The behavioral consistency gap, the discretionary-vs-non-negotiable framing, liquidity, and retirement income differences."
         },
         {
           "slug": "leverage-real-estates-real-edge",
           "title": "Leverage, and the house vs shares decision",
-          "access": "free"
+          "access": "free",
+          "summary": "Conventional mortgage leverage explained honestly: roughly 10% stock vs 7% property raw return, and how leverage inflates the effective return along with the risk."
         },
         {
           "slug": "islamic-home-finance-alternatives",
           "title": "Islamic home finance alternatives",
-          "access": "free"
+          "access": "free",
+          "summary": "Murabaha, Ijara, and how they fit into the leverage discussion from the previous lesson."
         },
         {
           "slug": "property-tax-perks-are-a-bonus",
           "title": "Property tax perks are a bonus, not a strategy",
-          "access": "free"
+          "access": "free",
+          "summary": "Primary residence CGT exemption and other perks. Why tax benefits should never be the entire rationale for an investment."
         }
       ]
     },
@@ -265,17 +300,20 @@ window.LEARN_MANIFEST = {
         {
           "slug": "how-super-actually-works",
           "title": "How super actually works",
-          "access": "free"
+          "access": "free",
+          "summary": "Contributions, preservation, the tax treatment, and why it is not optional."
         },
         {
           "slug": "why-the-default-option-usually-fails",
           "title": "Why the default option usually fails",
-          "access": "free"
+          "access": "free",
+          "summary": "What sits inside a typical balanced fund by default."
         },
         {
           "slug": "choosing-a-compliant-option",
           "title": "Choosing a compliant option",
-          "access": "free"
+          "access": "free",
+          "summary": "Dedicated Islamic super funds vs member-direct investment within an existing fund."
         }
       ]
     },
@@ -288,17 +326,20 @@ window.LEARN_MANIFEST = {
         {
           "slug": "zakat-fundamentals",
           "title": "Zakat fundamentals",
-          "access": "free"
+          "access": "free",
+          "summary": "Nisab, hawl, the 2.5% rate, and what counts as zakatable wealth."
         },
         {
           "slug": "zakat-on-modern-assets",
           "title": "Zakat on modern assets",
-          "access": "free"
+          "access": "free",
+          "summary": "Shares, super, crypto, investment property and business inventory, where scholars agree and where they do not."
         },
         {
           "slug": "purifying-non-compliant-income",
           "title": "Purifying non-compliant income",
-          "access": "free"
+          "access": "free",
+          "summary": "What to do about incidental interest and impermissible revenue in an otherwise-compliant holding."
         }
       ]
     },
@@ -311,17 +352,20 @@ window.LEARN_MANIFEST = {
         {
           "slug": "markets-fall-thats-normal",
           "title": "Markets fall. That's normal.",
-          "access": "free"
+          "access": "free",
+          "summary": "Panic-selling during downturns, the Buffett 'fearful when others are greedy' framing, and why risk falls with a longer time horizon."
         },
         {
           "slug": "takaful-and-the-australian-insurance-reality",
           "title": "Takaful and the Australian insurance reality",
-          "access": "free"
+          "access": "free",
+          "summary": "Why conventional insurance is problematic, what takaful is, and an honest look at what is actually available in Australia."
         },
         {
           "slug": "estate-planning-and-faraid",
           "title": "Estate planning and Fara'id",
-          "access": "free"
+          "access": "free",
+          "summary": "Why an Australian will is required for Islamic inheritance to happen at all."
         }
       ]
     },
@@ -334,12 +378,14 @@ window.LEARN_MANIFEST = {
         {
           "slug": "your-fire-number-for-real-this-time",
           "title": "Your FIRE number, for real this time",
-          "access": "free"
+          "access": "free",
+          "summary": "Full circle from the retirement concept lesson, now with Zaid and Amina's actual trajectories and the Australian super bridge worked through."
         },
         {
           "slug": "recap-and-whats-next",
           "title": "Recap and what's next",
-          "access": "free"
+          "access": "free",
+          "summary": "Pulling every module together, and where to go from here on the site."
         }
       ]
     }

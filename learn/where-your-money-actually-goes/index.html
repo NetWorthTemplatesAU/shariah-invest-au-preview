@@ -135,7 +135,7 @@
   </div>
 
   <article class="article lesson-article">
-    <div class="article-eyebrow">Module 4 &middot; Lesson 1 &middot; 8 min read</div>
+    <div class="article-eyebrow">Module 4 &middot; Lesson 1 &middot; 9 min read</div>
     <h1>Where your money actually goes</h1>
     <!-- BYLINE_START --><div class="byline">
       <span class="byline-by">By <a href="../../about/">A. Halim</a> <span class="byline-role">Founder, Shariah Invest AU</span></span>
@@ -147,6 +147,25 @@
       <div class="article-body">
         <p>You do not need a budget with 40 categories. You need one number you can state accurately, and most people cannot.</p>
         <p>Ask someone what they spend in a year and you will usually get a pause and then a guess. The guess is almost always low, and it is low by a consistent amount: the irregular things. Insurance, rego, the dentist, a wedding, flights, a replacement laptop. Nobody forgets rent. Everybody forgets the once-a-year items that collectively run to thousands.</p>
+        <div class="lesson-embed"><div style="border:1px solid var(--border); border-radius:12px; padding:16px 18px;">
+  <label for="spendGuess" style="font-weight:700; font-size:14.5px; display:block; margin-bottom:8px;">Before you read on: what do you think you spent last year?</label>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+    <input id="spendGuess" type="number" inputmode="numeric" placeholder="$" style="width:140px; padding:8px 10px; border-radius:8px; border:1px solid var(--border-strong); background:var(--bg); color:var(--ink); font-size:14.5px;">
+    <button type="button" id="spendGuessBtn" class="btn btn-secondary" style="padding:8px 16px;">Commit to it</button>
+  </div>
+  <p id="spendGuessOut" style="margin:10px 0 0; font-size:13.5px; color:var(--ink-muted); display:none;"></p>
+</div>
+<script>(function(){
+  var btn = document.getElementById('spendGuessBtn');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    var v = document.getElementById('spendGuess').value;
+    var out = document.getElementById('spendGuessOut');
+    if (!v) { out.textContent = 'Type a number first, even a rough one.'; out.style.display = 'block'; return; }
+    out.textContent = "Held: $" + Number(v).toLocaleString() + ". Keep it in mind, most people's own guess turns out lower than their real number, and the gap is almost always the irregular once-a-year items.";
+    out.style.display = 'block';
+  });
+})();</script></div>
         <p>That gap is the problem this lesson solves, and it is worth solving because four later things depend on it: your <strong>emergency fund</strong> (cash set aside for when things go wrong) target, your <strong>disposable income</strong> (what's actually left over to save or invest), whether a pay rise actually improved anything, and the number that defines financial independence in <a href='../your-fire-number-for-real-this-time/'>the FIRE number lesson</a>. Every one of those is computed from your annual spending. Guess it, and all four are wrong.</p>
         <h2>First, the number you actually have</h2>
         <p>Before any of this works, one distinction has to be right, because everything downstream is built on it: <strong>gross vs. net (post-tax) income</strong> (before-tax pay vs. what you actually take home).</p>
@@ -256,6 +275,7 @@
 <script src="../../assets/learn-progress.js"></script>
 <script src="../../assets/learn-quiz.js"></script>
 <script src="../../assets/learn-reveal.js"></script>
+<script src="../../assets/learn-preview.js"></script>
 
 </body>
 </html>
