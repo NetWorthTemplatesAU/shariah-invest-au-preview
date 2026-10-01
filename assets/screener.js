@@ -80,7 +80,7 @@ function barsHtml(x){
 
 function detailHtml(x){
   if(x.status==='pass'||x.status==='fail'||x.status==='review'){
-    const recvItem = (x.recv!==undefined) ? `<div class="detail-item"><div class="k">Receivables / market cap</div><div class="v">${x.recv.toFixed(1)}% <span style="color:var(--ink-muted); font-weight:400;">(limit 30%)</span></div></div>` : `<div class="detail-item"><div class="k">Receivables / market cap</div><div class="v" style="color:var(--ink-muted); font-weight:400;">Not checked — already fails another ratio</div></div>`;
+    const recvItem = (x.recv!==undefined) ? `<div class="detail-item"><div class="k">Receivables / market cap</div><div class="v">${x.recv.toFixed(1)}% <span style="color:var(--ink-muted); font-weight:400;">(limit 30%)</span></div></div>` : `<div class="detail-item"><div class="k">Receivables / market cap</div><div class="v" style="color:var(--ink-muted); font-weight:400;">Not checked, already fails another ratio</div></div>`;
     return `<div class="detail-grid">
       <div class="detail-item"><div class="k">Market cap</div><div class="v">$${x.mc.toFixed(2)}B AUD</div></div>
       <div class="detail-item"><div class="k">Debt / market cap</div><div class="v">${x.debt.toFixed(1)}% <span style="color:var(--ink-muted); font-weight:400;">(limit 30%)</span></div></div>
@@ -91,10 +91,10 @@ function detailHtml(x){
     <p style="margin-top:10px;"><a href="${slug(x.t)}/" style="font-size:13px; font-weight:700;">View full page for ${x.t} →</a></p>`;
   }
   if(x.status==='excluded'){
-    return `<div class="note"><strong style="color:var(--ink)">Excluded on business activity:</strong> ${x.reason}. No ratio screen applied — this stock is out regardless of its balance sheet.</div>
+    return `<div class="note"><strong style="color:var(--ink)">Excluded on business activity:</strong> ${x.reason}. No ratio screen applied. This stock is out regardless of its balance sheet.</div>
     <p style="margin-top:10px;"><a href="${slug(x.t)}/" style="font-size:13px; font-weight:700;">View full page for ${x.t} →</a></p>`;
   }
-  return `<div class="note">Business-activity and ratio screening hasn't been run on this stock yet. It's in the queue for the next data pass — check back, or search for a name we've already covered above.</div>`;
+  return `<div class="note">Business-activity and ratio screening hasn't been run on this stock yet. It's in the queue for the next data pass: check back, or search for a name we've already covered above.</div>`;
 }
 
 // Rendering all 199 rows up front pushed Largest Contentful Paint to ~8s on a throttled

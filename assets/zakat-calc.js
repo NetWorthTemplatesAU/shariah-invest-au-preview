@@ -98,7 +98,7 @@ function renderNisabLive(){
         <label for="inManualPrice">${metal} price per gram (AUD)</label>
         <input type="number" id="inManualPrice" class="calc-input" min="0" step="0.01" placeholder="e.g. 2.95">
       </div>
-      <div id="manualNisabOut" class="calc-match warn" style="margin-top:8px;">Nisab (${grams}g ${metal.toLowerCase()}): —</div>`;
+      <div id="manualNisabOut" class="calc-match warn" style="margin-top:8px;">Nisab (${grams}g ${metal.toLowerCase()}): -</div>`;
     const manual = document.getElementById('inManualPrice');
     if(manual){
       manual.addEventListener('input', () => {
@@ -111,7 +111,7 @@ function renderNisabLive(){
           outEl.className = n ? 'calc-match ok' : 'calc-match warn';
           outEl.innerHTML = n
             ? `Nisab (${grams}g ${metal.toLowerCase()}): <strong>${formatAUD(n)}</strong>`
-            : `Nisab (${grams}g ${metal.toLowerCase()}): —`;
+            : `Nisab (${grams}g ${metal.toLowerCase()}): -`;
         }
         // Keep an on-screen result in step with the manually entered price.
         const resultEl = document.getElementById('calcResult');
@@ -170,7 +170,7 @@ function renderShareRows(){
     if(!r.ticker){
       matchNote = '';
     } else if(stock && zakatable !== null){
-      matchNote = `<div class="calc-match ok">Matched ${stock.n} — cash ${stock.cash.toFixed(1)}% + receivables ${stock.recv.toFixed(1)}% = <strong>${zakatable.toFixed(1)}% zakatable under the precise method</strong>.</div>`;
+      matchNote = `<div class="calc-match ok">Matched ${stock.n}: cash ${stock.cash.toFixed(1)}% + receivables ${stock.recv.toFixed(1)}% = <strong>${zakatable.toFixed(1)}% zakatable under the precise method</strong>.</div>`;
     } else if(stock){
       matchNote = `<div class="calc-match warn">Matched ${stock.n}, but no receivables figure on file for this stock (it already fails another ratio), use full market value instead.</div>`;
     } else {
@@ -255,7 +255,7 @@ function calculate(noScroll){
       ? 'Still fetching today’s metal price, one moment, then press Calculate again.'
       : 'Enter today’s metal price above to check the nisab threshold.';
     verdictEl.className = 'calc-verdict warn';
-    dueEl.textContent = '—';
+    dueEl.textContent = '-';
   } else if(aboveNisab){
     verdictEl.textContent = 'Above nisab, zakat is due.';
     verdictEl.className = 'calc-verdict pass';
